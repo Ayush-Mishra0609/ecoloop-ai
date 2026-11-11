@@ -18,8 +18,7 @@ DATASET_DIR = (
     ML_DIR / "datasets" / "E-Tadweer Image Dataset (ETID)"
 )
 
-MODEL_PATH = ML_DIR / "models" / "mobilenetv2_best.keras"
-
+MODEL_PATH = ML_DIR / "models" / "mobilenetv2_finetuned_best.keras"
 # Configuration
 IMG_SIZE = (224, 224)
 BATCH_SIZE = 32
