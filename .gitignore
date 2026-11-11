@@ -218,3 +218,35 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# EcoLoop AI specific exclusions
+
+# Virtual environments
+**/venv/
+**/.venv/
+
+# Node dependencies
+**/node_modules/
+
+# Environment variables and secrets
+**/.env.*
+!**/.env.example
+
+# ML dataset (approximately 2 GB)
+ml/datasets/
+
+# Trained ML models
+ml/models/*.keras
+ml/models/*.h5
+
+# Generated evaluation outputs
+ml/models/*.png
+
+# Build files
+frontend/dist/
+
+
+# Ignore ML model artifacts
+ml/models/*
+!ml/models/
+!ml/models/class_names.json
