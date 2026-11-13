@@ -4,3 +4,5 @@ python-multipart
 python-dotenv
 supabase
 pydantic
+tensorflow==2.21.0
+Pillow

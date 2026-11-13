@@ -1144,3 +1144,156 @@
     justify-content: center;
   }
 }
+
+/* EcoLoop AI prediction results */
+
+.ai-analysis-card {
+  margin: 24px 0;
+  padding: 26px;
+  background: #ffffff;
+  border: 1px solid #dce9df;
+  border-radius: 16px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
+}
+
+.ai-analysis-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #16834a;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.7px;
+}
+
+.ai-analysis-heading h2 {
+  margin: 10px 0 20px;
+  color: #183b29;
+}
+
+.ai-result-main {
+  padding: 20px;
+  background: #f0f8f2;
+  border-radius: 12px;
+}
+
+.ai-result-main span {
+  color: #64756a;
+  font-size: 13px;
+}
+
+.ai-result-main h3 {
+  margin: 8px 0;
+  color: #16834a;
+  font-size: 28px;
+}
+
+.ai-result-main p {
+  margin: 0;
+  color: #52675a;
+}
+
+.ai-predictions {
+  margin-top: 24px;
+}
+
+.ai-predictions h3 {
+  margin-bottom: 18px;
+  color: #263b2e;
+  font-size: 17px;
+}
+
+.ai-prediction-row {
+  margin-bottom: 17px;
+}
+
+.ai-prediction-row > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+  color: #34483a;
+  font-size: 14px;
+}
+
+.ai-progress-track {
+  height: 8px;
+  overflow: hidden;
+  background: #e8eee9;
+  border-radius: 20px;
+}
+
+.ai-progress-fill {
+  height: 100%;
+  background: #239b59;
+  border-radius: 20px;
+  transition: width 0.3s ease;
+}
+
+.ai-disclaimer {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #e8eee9;
+  color: #718078;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.category-correction {
+  margin-top: 24px;
+  padding: 20px;
+  background: #f7faf7;
+  border: 1px solid #dce9df;
+  border-radius: 12px;
+}
+
+.category-correction h3 {
+  margin: 0 0 8px;
+  color: #183b29;
+}
+
+.category-correction p {
+  color: #64756a;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.category-correction label {
+  display: block;
+  margin: 18px 0 8px;
+  font-weight: 600;
+}
+
+.category-correction select {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #d5e2d8;
+  border-radius: 8px;
+  background: white;
+  font-size: 15px;
+}
+
+.confirm-category-button {
+  margin-top: 15px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #16834a;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.confirm-category-button:hover {
+  background: #116b3b;
+}
+
+.category-confirmation {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 15px;
+  color: #16834a;
+  font-weight: 600;
+  font-size: 14px;
+}

@@ -1,5 +1,4 @@
-
-import { analyzeDevice } from "../services/deviceService";
+import { analyzeDevice, saveDevice } from "../services/deviceService";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -21,6 +20,10 @@ function Upload() {
   const [preview, setPreview] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [analysis, setAnalysis] = useState(null);
+  const [correctedCategory, setCorrectedCategory] = useState("");
+  const [categoryConfirmed, setCategoryConfirmed] = useState(false);
+  const [saving, setSaving] = useState(false); 
 
   const [formData, setFormData] = useState({
     deviceName: "",
@@ -56,15 +59,25 @@ function Upload() {
     }
 
     setMessage("");
+    setAnalysis(null);
+    setCorrectedCategory("");
+    setCategoryConfirmed(false);
     setImage(file);
     setPreview(URL.createObjectURL(file));
   };
 
-  const removeImage = () => {
-    if (preview) URL.revokeObjectURL(preview);
-    setImage(null);
-    setPreview("");
-  };
+  
+const removeImage = () => {
+  if (preview) URL.revokeObjectURL(preview);
+
+  setImage(null);
+  setPreview("");
+  setAnalysis(null);
+  setCorrectedCategory("");
+  setCategoryConfirmed(false);
+  setMessage("");
+};
+
 
   
 const handleSubmit = async (e) => {
@@ -93,9 +106,10 @@ const handleSubmit = async (e) => {
 
     const result = await analyzeDevice(data);
 
-    setMessage(
-      `${result.message} Device: ${result.device.device_name}. API status: ${result.analysis.status}.`
-    );
+    setAnalysis(result.analysis);
+    setCorrectedCategory(result.analysis.classification);
+    setCategoryConfirmed(false);
+    setMessage(result.message);
 
     console.log("API response:", result);
 
@@ -104,6 +118,39 @@ const handleSubmit = async (e) => {
     setMessage(error.message || "Something went wrong.");
   } finally {
     setLoading(false);
+  }
+};
+
+const handleSaveDevice = async () => {
+  if (!categoryConfirmed) {
+    setMessage("Please confirm the device category first.");
+    return;
+  }
+
+  if (!image || !analysis) {
+    setMessage("Please analyze your device first.");
+    return;
+  }
+
+  setSaving(true);
+  setMessage("");
+
+  try {
+    const savedDevice = await saveDevice({
+      image,
+      formData,
+      analysis,
+      correctedCategory,
+    });
+
+    setMessage("Device saved successfully!");
+
+    console.log("Saved device:", savedDevice);
+  } catch (error) {
+    console.error("Save device error:", error);
+    setMessage(error.message || "Failed to save device.");
+  } finally {
+    setSaving(false);
   }
 };
 
@@ -348,6 +395,121 @@ const handleSubmit = async (e) => {
               {message}
             </div>
           )}
+          
+{analysis && (
+  <section className="ai-analysis-card">
+    <div className="ai-analysis-heading">
+      <div>
+        <span className="ai-analysis-tag">
+          <CheckCircle size={15} />
+          AI ANALYSIS COMPLETED
+        </span>
+
+        <h2>EcoLoop AI Results</h2>
+      </div>
+    </div>
+
+    <div className="ai-result-main">
+      <span>Detected Device Category</span>
+
+      <h3>{analysis.classification}</h3>
+
+      <p>
+        Model confidence:{" "}
+        {(analysis.confidence * 100).toFixed(2)}%
+      </p>
+    </div>
+
+    <div className="ai-predictions">
+      <h3>Top Predictions</h3>
+
+      {analysis.top_predictions?.map((item, index) => (
+        <div className="ai-prediction-row" key={item.category}>
+          <div>
+            <span>{index + 1}. {item.category}</span>
+            <strong>
+              {(item.confidence * 100).toFixed(2)}%
+            </strong>
+          </div>
+
+          <div className="ai-progress-track">
+            <div
+              className="ai-progress-fill"
+              style={{
+                width: `${item.confidence * 100}%`
+              }}
+            />
+          </div>
+        </div>
+      ))}
+    </div>
+
+<div className="category-correction">
+  <h3>Is this classification correct?</h3>
+
+  <p>
+    Please verify the AI prediction or select the correct
+    device category.
+  </p>
+
+  <label htmlFor="correctedCategory">
+    Confirm Device Category
+  </label>
+
+  <select
+    id="correctedCategory"
+    value={correctedCategory}
+    onChange={(e) => {
+      setCorrectedCategory(e.target.value);
+      setCategoryConfirmed(false);
+    }}
+  >
+    <option value="Battery">Battery</option>
+    <option value="Cable">Cable</option>
+    <option value="Keyboard">Keyboard</option>
+    <option value="Laptop">Laptop</option>
+    <option value="Mobile">Mobile</option>
+    <option value="Mouse">Mouse</option>
+    <option value="PCB">PCB</option>
+  </select>
+
+  <button
+    type="button"
+    className="confirm-category-button"
+    onClick={() => {
+      setCategoryConfirmed(true);
+      setMessage("Device category confirmed successfully!");
+    }}
+  >
+    Confirm Category
+  </button>
+
+  {categoryConfirmed && (
+    <div className="category-confirmation">
+      <CheckCircle size={17} />
+      Confirmed category: {correctedCategory}
+    </div>
+  )}
+</div>
+{categoryConfirmed && (
+  <button
+    type="button"
+    className="confirm-category-button"
+    onClick={handleSaveDevice}
+    disabled={saving}
+  >
+    {saving ? "Saving Device..." : "Save Device"}
+  </button>
+)}
+
+
+    <p className="ai-disclaimer">
+      AI predictions are estimates. Please verify the detected
+      category before proceeding with recovery recommendations.
+    </p>
+  </section>
+)}
+
 
           <div className="upload-submit-section">
             <p>

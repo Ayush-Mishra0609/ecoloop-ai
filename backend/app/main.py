@@ -1,14 +1,35 @@
 
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from contextlib import asynccontextmanager
+
+from fastapi import (
+    FastAPI, UploadFile, File, Form, HTTPException
+)
 from fastapi.middleware.cors import CORSMiddleware
+
+from app.services.prediction_service import DevicePredictionService
+
+
+# Load model once when the API starts
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    print("Starting EcoLoop AI API...")
+
+    app.state.prediction_service = DevicePredictionService()
+
+    yield
+
+    print("Shutting down EcoLoop AI API...")
+
 
 app = FastAPI(
     title="EcoLoop AI API",
     description="AI-powered E-waste Recovery Intelligence",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan
 )
 
-# Allow React frontend to communicate with FastAPI
+
+# React frontend communication
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],
@@ -46,6 +67,7 @@ async def analyze_device(
     working_status: str = Form(...),
     description: str = Form("")
 ):
+
     # Validate image type
     allowed_types = [
         "image/jpeg",
@@ -59,7 +81,7 @@ async def analyze_device(
             detail="Only JPG, PNG and WEBP images are allowed."
         )
 
-    # Read image and validate size
+    # Read and validate image
     image_data = await image.read()
 
     if len(image_data) > 5 * 1024 * 1024:
@@ -74,12 +96,24 @@ async def analyze_device(
             detail="Uploaded image is empty."
         )
 
-    # Temporary analysis response.
-    # Actual ML models will be integrated later.
+    try:
+        # Run MobileNetV2 prediction
+        prediction = app.state.prediction_service.predict(
+            image_data
+        )
+
+    except Exception as e:
+        print("Prediction error:", str(e))
+
+        raise HTTPException(
+            status_code=500,
+            detail="Unable to analyze the uploaded image."
+        )
 
     return {
         "success": True,
-        "message": "Device received successfully!",
+        "message": "Device analyzed successfully!",
+
         "device": {
             "device_name": device_name,
             "category": category,
@@ -91,9 +125,12 @@ async def analyze_device(
             "description": description,
             "image_filename": image.filename
         },
+
         "analysis": {
-            "status": "pending",
-            "classification": "Not yet implemented",
+            "status": "completed",
+            "classification": prediction["category"],
+            "confidence": prediction["confidence"],
+            "top_predictions": prediction["top_predictions"],
             "estimated_value": None,
             "recommended_pathway": None
         }
