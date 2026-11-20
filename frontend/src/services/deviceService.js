@@ -79,6 +79,9 @@ export const saveDevice = async ({
       confirmed_category: correctedCategory,
       top_predictions: analysis.top_predictions,
 
+      recommended_pathway: analysis.recommended_pathway,
+      estimated_co2_kg: analysis.estimated_co2_kg,
+
       image_url: filePath,
     })
     .select()

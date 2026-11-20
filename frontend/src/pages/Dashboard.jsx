@@ -1,5 +1,6 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getDashboardDevices } from "../services/dashboardService";
 import { Link } from "react-router-dom";
 import {
   Recycle, LayoutDashboard, Smartphone,
@@ -10,41 +11,123 @@ import {
 
 function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [devices, setDevices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  useEffect(() => {
+  const fetchDevices = async () => {
+    try {
+      setLoading(true);
+      setError("");
 
-  const stats = [
-    {
-      title: "Devices Analyzed",
-      value: "128",
-      change: "+12 this month",
-      icon: Smartphone
-    },
-    {
-      title: "Reuse Potential",
-      value: "68%",
-      change: "+8% this month",
-      icon: Recycle
-    },
-    {
-      title: "Recovery Value",
-      value: "₹24,500",
-      change: "+15% this month",
-      icon: IndianRupee
-    },
-    {
-      title: "CO₂ Saved",
-      value: "86 kg",
-      change: "Estimated impact",
-      icon: Leaf
+      const data = await getDashboardDevices();
+      setDevices(data);
+    } catch (err) {
+      console.error("Dashboard fetch error:", err);
+      setError(err.message || "Failed to load devices.");
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
-  const activities = [
-    { name: "Dell Laptop", category: "Laptop", status: "Reuse", date: "Today" },
-    { name: "Samsung Phone", category: "Smartphone", status: "Repair", date: "Yesterday" },
-    { name: "HP Monitor", category: "Monitor", status: "Recycle", date: "28 Oct" },
-    { name: "Wireless Keyboard", category: "Accessory", status: "Reuse", date: "27 Oct" }
-  ];
+  fetchDevices();
+}, []);
 
+  
+const totalDevices = devices.length;
+const totalCo2Saved = devices.reduce(
+  (total, device) => {
+    return total + Number(device.estimated_co2_kg || 0);
+  },
+  0
+);
+
+const recoveryCounts = {
+  Reuse: devices.filter(
+    (device) => device.recommended_pathway === "Reuse"
+  ).length,
+
+  Repair: devices.filter(
+    (device) => device.recommended_pathway === "Repair"
+  ).length,
+
+  Recycle: devices.filter(
+    (device) => device.recommended_pathway === "Recycle"
+  ).length,
+};
+
+const classifiedDevices =
+  recoveryCounts.Reuse +
+  recoveryCounts.Repair +
+  recoveryCounts.Recycle;
+
+const getPercentage = (count) => {
+  return classifiedDevices > 0
+    ? Math.round((count / classifiedDevices) * 100)
+    : 0;
+};
+
+const recoveryDistribution = [
+  {
+    name: "Reuse",
+    count: recoveryCounts.Reuse,
+    percentage: getPercentage(recoveryCounts.Reuse),
+    className: "reuse",
+  },
+  {
+    name: "Repair",
+    count: recoveryCounts.Repair,
+    percentage: getPercentage(recoveryCounts.Repair),
+    className: "repair",
+  },
+  {
+    name: "Recycle",
+    count: recoveryCounts.Recycle,
+    percentage: getPercentage(recoveryCounts.Recycle),
+    className: "recycle",
+  },
+];
+
+
+const workingDevices = devices.filter(
+  (device) => device.working_status === "Yes"
+).length;
+
+const stats = [
+  {
+    title: "Devices Analyzed",
+    value: loading ? "..." : totalDevices,
+    change: "Total registered devices",
+    icon: Smartphone
+  },
+  {
+    title: "Working Devices",
+    value: loading ? "..." : workingDevices,
+    change: "Fully working devices",
+    icon: Recycle
+  },
+  {
+    title: "Recovery Value",
+    value: "Not calculated",
+    change: "Awaiting valuation model",
+    icon: IndianRupee
+  },
+  {
+    title: "CO₂ Saved",
+    value: "Not calculated",
+    change: "Awaiting impact model",
+    icon: Leaf
+  }
+];
+
+
+  const activities = devices.map((device) => ({
+  id: device.id,
+  name: device.device_name || "Unnamed Device",
+  category: device.confirmed_category || device.ai_classification || "Unknown",
+  status: device.working_status || "Unknown",
+  date: new Date(device.created_at).toLocaleDateString("en-IN"),
+}));
   return (
     <div className="dashboard-layout">
 
@@ -174,34 +257,31 @@ function Dashboard() {
               <TrendingUp color="#16a34a" />
             </div>
 
-            <div className="distribution-chart">
-              <div className="distribution-item">
-                <div className="distribution-label">
-                  <span>Reuse</span><strong>45%</strong>
-                </div>
-                <div className="progress-track">
-                  <div className="progress-fill reuse" />
-                </div>
-              </div>
+            
+<div className="distribution-chart">
+  {loading ? (
+    <p>Loading recovery statistics...</p>
+  ) : recoveryDistribution.every((item) => item.count === 0) ? (
+    <p>No recovery recommendations available yet.</p>
+  ) : (
+    recoveryDistribution.map((item) => (
+      <div className="distribution-item" key={item.name}>
+        <div className="distribution-label">
+          <span>{item.name} ({item.count})</span>
+          <strong>{item.percentage}%</strong>
+        </div>
 
-              <div className="distribution-item">
-                <div className="distribution-label">
-                  <span>Repair</span><strong>23%</strong>
-                </div>
-                <div className="progress-track">
-                  <div className="progress-fill repair" />
-                </div>
-              </div>
+        <div className="progress-track">
+          <div
+            className={`progress-fill ${item.className}`}
+            style={{ width: `${item.percentage}%` }}
+          />
+        </div>
+      </div>
+    ))
+  )}
+</div>
 
-              <div className="distribution-item">
-                <div className="distribution-label">
-                  <span>Recycle</span><strong>32%</strong>
-                </div>
-                <div className="progress-track">
-                  <div className="progress-fill recycle" />
-                </div>
-              </div>
-            </div>
 
             <p className="chart-note">
               <Leaf size={16} /> Prioritize reuse and repair
@@ -218,9 +298,12 @@ function Dashboard() {
               <Leaf color="#16a34a" />
             </div>
 
-            <div className="impact-value">86 kg</div>
+            <div className="impact-value">
+              {loading ? "..." : `${totalCo2Saved.toFixed(1)} kg`}
+            </div>
+
             <p className="impact-caption">
-              Estimated CO₂ emissions avoided
+                Estimated CO₂e emissions avoided
             </p>
 
             <div className="impact-footer">
@@ -253,18 +336,26 @@ function Dashboard() {
               <span>Date</span>
             </div>
 
-            {activities.map((item, index) => (
-              <div className="activity-row" key={index}>
-                <strong>{item.name}</strong>
-                <span>{item.category}</span>
+            
+{loading ? (
+  <p className="empty-state">Loading your devices...</p>
+) : error ? (
+  <p className="empty-state">{error}</p>
+) : activities.length === 0 ? (
+  <p className="empty-state">
+    No devices found. Analyze your first device!
+  </p>
+) : (
+  activities.slice(0, 5).map((item) => (
+    <div className="activity-row" key={item.id}>
+      <strong>{item.name}</strong>
+      <span>{item.category}</span>
+      <span>{item.status}</span>
+      <span>{item.date}</span>
+    </div>
+  ))
+)}
 
-                <span className={`status-badge ${item.status.toLowerCase()}`}>
-                  {item.status}
-                </span>
-
-                <span>{item.date}</span>
-              </div>
-            ))}
 
           </div>
 

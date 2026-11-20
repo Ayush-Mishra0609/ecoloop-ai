@@ -7,6 +7,8 @@ from fastapi import (
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.services.prediction_service import DevicePredictionService
+from app.services.recovery_service import recommend_recovery_pathway
+from app.services.carbon_service import calculate_co2_savings
 
 
 # Load model once when the API starts
@@ -101,6 +103,16 @@ async def analyze_device(
         prediction = app.state.prediction_service.predict(
             image_data
         )
+        recovery = recommend_recovery_pathway(
+        working_status,
+        condition
+    )
+        estimated_co2 = calculate_co2_savings(
+    prediction["category"],
+    recovery["pathway"]
+)
+        
+    
 
     except Exception as e:
         print("Prediction error:", str(e))
@@ -132,6 +144,8 @@ async def analyze_device(
             "confidence": prediction["confidence"],
             "top_predictions": prediction["top_predictions"],
             "estimated_value": None,
-            "recommended_pathway": None
+            "estimated_co2_kg": estimated_co2,
+            "recommended_pathway": recovery["pathway"],
+            "recommendation_reason": recovery["reason"]
         }
     }
