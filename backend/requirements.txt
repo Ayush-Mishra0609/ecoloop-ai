@@ -6,3 +6,4 @@ supabase
 pydantic
 tensorflow==2.21.0
 Pillow
+httpx

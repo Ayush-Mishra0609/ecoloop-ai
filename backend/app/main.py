@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.services.prediction_service import DevicePredictionService
 from app.services.recovery_service import recommend_recovery_pathway
 from app.services.carbon_service import calculate_co2_savings
+from app.services.provider_service import search_recovery_centres
 
 
 # Load model once when the API starts
@@ -55,6 +56,37 @@ def health_check():
         "status": "healthy",
         "project": "EcoLoop AI"
     }
+
+@app.get("/api/providers/search")
+async def get_recovery_centres(
+    location: str,
+    centre_type: str = "All"
+):
+    if not location.strip():
+        raise HTTPException(
+            status_code=400,
+            detail="Please provide a location."
+        )
+
+    if centre_type not in ["All", "Repair", "Recycle"]:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid centre type."
+        )
+
+    try:
+        return await search_recovery_centres(
+            location.strip(),
+            centre_type
+        )
+
+    except Exception as e:
+        print("Provider search error:", str(e))
+
+        raise HTTPException(
+            status_code=502,
+            detail="Unable to retrieve recovery centres right now."
+        )
 
 
 @app.post("/api/devices/analyze")

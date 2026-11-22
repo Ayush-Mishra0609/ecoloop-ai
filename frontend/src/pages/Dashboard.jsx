@@ -153,9 +153,9 @@ const stats = [
             <MapPin size={19} /> Recovery Centres
           </Link>
 
-          <a href="#activity">
+          <Link to="/history">
             <History size={19} /> History
-          </a>
+          </Link>
 
           <a href="#settings">
             <Settings size={19} /> Settings
@@ -322,9 +322,9 @@ const stats = [
               <p>Your recently analyzed electronics</p>
             </div>
 
-            <a href="#overview" className="view-all">
-              View All <ArrowUpRight size={16} />
-            </a>
+            <Link to="/history" className="view-all">
+  View All <ArrowUpRight size={16} />
+</Link>
           </div>
 
           <div className="activity-table">
