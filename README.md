@@ -1,94 +1,120 @@
 # ♻️ EcoLoop AI – E-Waste Recovery & Reuse Intelligence
 
-An AI-powered platform that identifies electronic waste, evaluates device conditions, recommends sustainable recovery pathways, and helps users discover the hidden value of discarded electronics.
+<p align="center">
+  <strong>Making Every Device Count.</strong>
+</p>
 
-## 🌍 About the Project
+<p align="center">
+  An AI-powered platform for electronic waste identification, device condition assessment, intelligent recovery recommendations, and environmental impact tracking.
+</p>
 
-Electronic waste is one of the fastest-growing waste streams worldwide. Many electronic devices that are discarded still contain reusable components, repairable hardware, or valuable recyclable materials.
+---
 
-**EcoLoop AI** aims to bridge this gap through Artificial Intelligence and Machine Learning.
+## 🌍 About EcoLoop AI
 
-The platform allows users to upload images of electronic devices, identify their categories using an image classification model, assess their condition using AI-powered analysis, and receive recommendations for reuse, repair, or recycling.
+Electronic waste is one of the fastest-growing waste streams worldwide. Many discarded electronic devices still contain reusable components, repairable hardware, and valuable recyclable materials.
 
-The goal is to promote a circular economy by reducing electronic waste, extending device lifecycles, and encouraging responsible resource recovery.
+**EcoLoop AI** is an AI-powered e-waste management platform designed to promote sustainable electronic waste recovery through Artificial Intelligence and Machine Learning.
 
-## 🎯 Key Features
+The platform enables users to upload images of electronic devices, automatically classify them using a deep learning model, analyze their physical and functional condition, and receive intelligent recommendations for reuse, repair, or recycling.
+
+By combining computer vision, Generative AI, and environmental impact estimation, EcoLoop AI aims to extend the lifecycle of electronic products, reduce unnecessary disposal, and encourage a circular economy.
+
+## ✨ Key Features
 
 ### 1. AI-Powered E-Waste Classification
-- Upload images of electronic devices.
-- Automatically identify the device category using a trained deep learning model.
-- Display classification confidence.
-- Allow users to correct the predicted category when necessary.
+- Upload images of electronic devices for automated classification.
+- Identify electronic waste using a trained MobileNetV2 model.
+- Display predicted device categories and classification confidence.
+- Allow manual correction of predicted categories.
+- Support seven electronic waste categories.
 
-**Supported categories:**
-- Battery
-- Cable
-- Keyboard
-- Laptop
-- Mobile
-- Mouse
-- PCB (Printed Circuit Board)
+**Supported Categories:**
 
-### 2. AI-Based Device Condition Analysis
-- Analyze device condition and visible damage.
-- Identify potential hardware issues.
-- Identify potential software-related issues.
-- Generate additional descriptions of device damage.
-- Provide a device health score.
+| Category | Description |
+|---|---|
+| Battery | Electronic batteries |
+| Cable | Electronic cables and wires |
+| Keyboard | Computer keyboards |
+| Laptop | Laptop computers |
+| Mobile | Smartphones and mobile devices |
+| Mouse | Computer mice |
+| PCB | Printed Circuit Boards |
+
+### 2. Gemini-Powered Device Analysis
+- Analyze device condition and functional status.
+- Generate descriptions of hardware-related issues.
+- Identify potential software-related problems.
+- Evaluate battery health and physical damage information.
+- Generate additional descriptions of device conditions.
+- Provide AI-assisted device health assessment.
 
 ### 3. Intelligent Recovery Recommendations
 
-EcoLoop AI recommends one of three recovery pathways:
+EcoLoop AI evaluates device conditions and recommends one of three recovery pathways.
 
-| Pathway | Description |
+| Recovery Pathway | Purpose |
 |---|---|
-| Reuse | Recommend reuse when a device remains functional. |
-| Repair | Identify devices that may be restored through repairs. |
-| Recycle | Recommend responsible material recovery for unsuitable devices. |
+| ♻️ Reuse | Encourage continued use or resale of functional devices. |
+| 🔧 Repair | Identify devices that may be restored through repairs. |
+| 🌱 Recycle | Recommend responsible material recovery for devices unsuitable for reuse or repair. |
 
 ### 4. Recovery Value Estimation
-- Estimate the potential monetary recovery value of electronic devices.
-- Consider device category, condition, and recommended recovery pathway.
-- Aggregate estimated recovery values on the dashboard.
+- Estimate the potential monetary value of electronic devices.
+- Consider device category, condition, and recovery pathway.
+- Display estimated recovery value on the dashboard.
 
-*Recovery values are estimates and should not be treated as guaranteed resale prices.*
+*Recovery values are indicative estimates and are not guaranteed resale prices.*
 
 ### 5. Environmental Impact Tracking
-- Calculate estimated CO₂e emissions avoided.
-- Display cumulative environmental impact.
-- Track sustainability contributions through the dashboard.
+- Estimate CO₂e emissions avoided through device recovery.
+- Calculate cumulative environmental impact.
+- Display total estimated CO₂ savings.
+- Encourage sustainable recovery practices.
 
 ### 6. Interactive Dashboard
-The dashboard provides an overview of:
-- Total devices analyzed.
-- Number of working devices.
-- Estimated recovery value.
-- Total CO₂ savings.
-- Reuse, repair, and recycling distribution.
-- Recent device analyses.
+
+The dashboard provides a centralized overview of the user's sustainability contribution.
+
+**Dashboard Components:**
+- Total Devices Analyzed
+- Working Devices
+- Estimated Recovery Value
+- CO₂ Saved
+- Recovery Distribution
+- Environmental Impact
+- Recent Device Analyses
 
 ### 7. Device History
-Maintain records of previously analyzed electronic devices and review their classifications and recovery recommendations.
+- Maintain records of analyzed electronic devices.
+- Review previously analyzed devices.
+- Access stored classification and recovery information.
 
 ### 8. Recovery Centre Discovery
-Provides an interface for discovering recovery centres and connecting users with potential e-waste recovery providers.
+- Search for nearby e-waste recovery centres.
+- Discover potential recycling and recovery facilities.
+- Use map-based location discovery.
+- Retrieve location information through OpenStreetMap services.
 
-### 9. User Settings
+### 9. User Settings and Global Dark Mode
 - Profile information interface.
 - Notification preferences.
-- Light and dark appearance modes.
 - Privacy and security information.
-- Global theme management with persistent theme preference.
+- Light and dark appearance modes.
+- Global theme management using React Context API.
+- Persistent theme preference using browser localStorage.
+
+---
 
 ## 🧠 Machine Learning Model
 
-EcoLoop AI uses a deep learning image classification model based on MobileNetV2.
+EcoLoop AI uses **MobileNetV2**, a convolutional neural network architecture, for image-based electronic waste classification.
 
 ### Dataset
 
-The model was trained using the E-Tadweer Image Dataset (ETID).
+The model was trained using the **E-Tadweer Image Dataset (ETID)**.
 
-| Dataset Split | Images |
+| Dataset Split | Number of Images |
 |---|---:|
 | Training | 4,388 |
 | Validation | 940 |
@@ -99,114 +125,202 @@ The model was trained using the E-Tadweer Image Dataset (ETID).
 
 | Evaluation Metric | Result |
 |---|---:|
-| Test Accuracy | 97.66% |
+| Test Accuracy | **97.66%** |
 
-The model was evaluated using precision, recall, F1-score, and classification accuracy across the seven supported categories.
+The model was evaluated using:
+- Accuracy
+- Precision
+- Recall
+- F1-Score
+- Classification Report
 
-*These are results from the recorded model evaluation and should be distinguished from live production performance.*
+The model supports seven electronic waste categories: Battery, Cable, Keyboard, Laptop, Mobile, Mouse, and PCB.
+
+*Note: The reported accuracy represents the recorded evaluation on the held-out test dataset, not a guarantee of real-world classification accuracy.*
+
+---
 
 ## 🏗️ System Architecture
 
-The project follows a client-server architecture.
+EcoLoop AI follows a client-server architecture integrating a React frontend, FastAPI backend, machine learning services, Gemini AI, and Supabase.
 
 ```text
-             USER
-               |
-               v
-       REACT + VITE FRONTEND
-               |
-               v
-          FASTAPI BACKEND
-               |
-       +-------+-------+
-       |               |
-       v               v
-  ML CLASSIFIER    GEMINI AI
-  MobileNetV2      Device Analysis
-       |               |
-       +-------+-------+
-               |
-               v
-       DEVICE ASSESSMENT
-               |
-               v
-      RECOVERY RECOMMENDATION
-               |
-        +------+------+ 
-        |      |      |
-       REUSE  REPAIR RECYCLE
-               |
-               v
-       SUPABASE / POSTGRESQL
-               |
-               v
-       DASHBOARD & HISTORY
+                    USER
+                      |
+                      v
+              REACT + VITE FRONTEND
+                      |
+                      v
+                FASTAPI BACKEND
+                      |
+             +--------+--------+
+             |                 |
+             v                 v
+       MOBILENETV2          GEMINI AI
+       CLASSIFICATION      DEVICE ANALYSIS
+             |                 |
+             +--------+--------+
+                      |
+                      v
+              DEVICE ASSESSMENT
+                      |
+                      v
+             RECOVERY RECOMMENDATION
+                      |
+             +--------+--------+
+             |        |        |
+             v        v        v
+           REUSE    REPAIR   RECYCLE
+             |        |        |
+             +--------+--------+
+                      |
+                      v
+             ENVIRONMENTAL IMPACT
+               & VALUE ESTIMATION
+                      |
+                      v
+              SUPABASE DATABASE
+                      |
+                      v
+             DASHBOARD & HISTORY
 ```
+
+### Application Workflow
+
+1. User registers or logs into the application.
+2. User uploads an electronic device image.
+3. MobileNetV2 predicts the device category.
+4. User can confirm or correct the predicted category.
+5. Gemini AI assists with device condition analysis.
+6. Hardware and software issues are assessed.
+7. A recovery pathway is recommended.
+8. Environmental impact is estimated.
+9. Device information is stored in Supabase.
+10. Dashboard and history display the saved information.
+
+---
 
 ## 🛠️ Technology Stack
 
 | Component | Technology |
 |---|---|
-| Frontend | React.js, Vite |
+| Frontend | React.js 19 |
+| Build Tool | Vite |
 | Styling | CSS |
 | Routing | React Router DOM |
 | Icons | Lucide React |
+| Charts | Recharts |
+| Maps | Leaflet, React Leaflet |
 | Backend | Python, FastAPI |
 | Machine Learning | TensorFlow, MobileNetV2 |
-| AI Integration | Google Gemini API |
-| Database | PostgreSQL through Supabase |
+| Generative AI | Google Gemini API |
+| Database | PostgreSQL |
+| Backend-as-a-Service | Supabase |
 | Authentication | Supabase Auth |
-| Storage | Supabase Storage |
+| Image Storage | Supabase Storage |
+| Recovery Centre Search | OpenStreetMap Nominatim and Overpass APIs |
 | Version Control | Git and GitHub |
+
+---
 
 ## 📁 Project Structure
 
-The following is a representative structure; adjust it to match the actual repository.
-
 ```text
-EcoLoop-AI/
+ecoloop-ai/
 │
 ├── frontend/
-│   ├── src/
-│   │   ├── pages/
-│   │   ├── components/
-│   │   ├── services/
-│   │   ├── context/
-│   │   └── App.jsx
 │   ├── public/
+│   │
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   │   ├── Footer.jsx
+│   │   │   ├── Navbox.jsx
+│   │   │   └── RecoveryMap.jsx
+│   │   │
+│   │   ├── context/
+│   │   │   └── ThemeContext.jsx
+│   │   │
+│   │   ├── pages/
+│   │   │   ├── Landing.jsx
+│   │   │   ├── Login.jsx
+│   │   │   ├── Register.jsx
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── Upload.jsx
+│   │   │   ├── History.jsx
+│   │   │   ├── Providers.jsx
+│   │   │   └── Settings.jsx
+│   │   │
+│   │   ├── services/
+│   │   │   ├── dashboardService.js
+│   │   │   ├── deviceService.js
+│   │   │   ├── providerService.js
+│   │   │   └── supabase.js
+│   │   │
+│   │   ├── App.jsx
+│   │   ├── App.css
+│   │   ├── index.css
+│   │   └── main.jsx
+│   │
 │   ├── package.json
 │   └── vite.config.js
 │
 ├── backend/
-│   ├── main.py
-│   ├── models/
-│   ├── routers/
-│   ├── services/
+│   ├── app/
+│   │   ├── services/
+│   │   │   ├── carbon_service.py
+│   │   │   ├── gemini_service.py
+│   │   │   ├── prediction_service.py
+│   │   │   ├── provider_service.py
+│   │   │   └── recovery_service.py
+│   │   │
+│   │   └── main.py
+│   │
 │   └── requirements.txt
 │
 ├── ml/
 │   ├── models/
+│   │   ├── class_names.json
+│   │   └── class_names_final.json
+│   │
 │   └── scripts/
+│       ├── train.py
+│       ├── train_final.py
+│       ├── fine_tune.py
+│       ├── fine_tune_final.py
+│       ├── evaluate.py
+│       ├── predict.py
+│       ├── prepare_dataset.py
+│       ├── split_dataset.py
+│       └── test_final.py
 │
 ├── .gitignore
+├── LICENSE
 └── README.md
 ```
 
+---
+
 ## ⚙️ Installation and Setup
+
+Follow these instructions to run EcoLoop AI locally.
 
 ### Prerequisites
 
+Make sure you have installed:
+
 - Node.js and npm
-- Python 3.12 (or a version compatible with the project's dependencies)
+- Python 3.12 (or a version compatible with the backend dependencies)
 - Git
-- Supabase account
-- Google Gemini API key
+- A Supabase account
+- A Google Gemini API key
 
 ### 1. Clone the Repository
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
-cd EcoLoop-AI
+git clone https://github.com/Ayush-Mishra0609/ecoloop-ai.git
+
+cd ecoloop-ai
 ```
 
 ### 2. Frontend Setup
@@ -215,23 +329,34 @@ Navigate to the frontend directory:
 
 ```bash
 cd frontend
+```
+
+Install the required dependencies:
+
+```bash
 npm install
 ```
 
-Create a `.env` file using the environment variables required by your frontend configuration.
-
-Example:
+Create a `.env` file inside the `frontend` directory:
 
 ```env
-VITE_API_URL=YOUR_BACKEND_API_URL
+VITE_API_URL=http://localhost:8000
 VITE_SUPABASE_URL=YOUR_SUPABASE_URL
 VITE_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
 ```
 
-Start the development server:
+Replace the placeholder values with your Supabase project credentials.
+
+Start the frontend development server:
 
 ```bash
 npm run dev
+```
+
+The frontend will generally be available at:
+
+```text
+http://localhost:5173
 ```
 
 ### 3. Backend Setup
@@ -242,90 +367,126 @@ Open another terminal and navigate to the backend directory:
 cd backend
 ```
 
-Create and activate a Python virtual environment:
+Create a Python virtual environment:
 
 ```bash
 python -m venv venv
 ```
 
-Install dependencies:
+Activate the virtual environment.
+
+**Windows:**
+
+```bash
+venv\Scripts\activate
+```
+
+**Linux / macOS:**
+
+```bash
+source venv/bin/activate
+```
+
+Install backend dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Configure your backend environment variables according to the actual application configuration.
+Create a `.env` file inside the `backend` directory:
 
-Start FastAPI:
-
-```bash
-uvicorn main:app --reload
+```env
+GEMINI_API_KEY=YOUR_GEMINI_API_KEY
 ```
 
-The backend API documentation is generally available at:
+Start the FastAPI server from inside the `backend` directory:
+
+```bash
+uvicorn app.main:app --reload
+```
+
+Backend API documentation:
 
 ```text
 http://localhost:8000/docs
 ```
 
-### 4. Database Configuration
+### 4. Supabase Configuration
 
-Configure your Supabase project and provide the required credentials and database configuration.
+EcoLoop AI uses Supabase for authentication, PostgreSQL database storage, and image storage.
 
-Never commit private API keys, service-role keys, or database passwords.
+Configure the following in your Supabase project:
 
-## 📊 Expected Application Workflow
+- Supabase project URL.
+- Supabase publishable/anon key as required by your project configuration.
+- User authentication.
+- PostgreSQL `devices` table.
+- Private storage bucket named `device-images`.
+- Appropriate database permissions and Row Level Security policies.
 
-1. User registers or logs into EcoLoop AI.
-2. User uploads an electronic device image.
-3. The ML model predicts the device category.
-4. Gemini assists with device condition and damage analysis.
-5. The system evaluates device health.
-6. A recovery pathway is recommended.
-7. Recovery value and environmental impact are estimated.
-8. The analysis is saved and displayed in the dashboard and history.
+The frontend expects device records to be associated with the authenticated user's ID.
 
-## 🌱 Project Impact
+**Important:** The database schema and storage policies must be configured in Supabase separately. Do not expose service-role keys or database passwords in frontend code.
 
-EcoLoop AI aims to contribute towards:
+### 5. Machine Learning Model Setup
 
-- Reducing electronic waste.
-- Promoting repair and reuse over unnecessary disposal.
-- Encouraging responsible e-waste recycling.
-- Recovering valuable materials from discarded electronics.
-- Increasing awareness about sustainable electronic consumption.
+The trained model files are excluded from Git to avoid committing large binary files.
+
+Place the required trained model artifact in the expected location configured by the backend prediction service.
+
+The model class mapping files are available in:
+
+```text
+ml/models/
+```
+
+Check the prediction service configuration before running inference.
+
+---
+
+## 🔌 Backend API Endpoints
+
+The current FastAPI application exposes the following main endpoints:
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/` | Backend root endpoint |
+| GET | `/health` | Health check |
+| GET | `/api/providers/search` | Search for recovery centres |
+| POST | `/api/devices/analyze` | Analyze an uploaded device image |
+
+Interactive API documentation is available through FastAPI Swagger UI:
+
+```text
+http://localhost:8000/docs
+```
+
+---
+
+## 🌱 Environmental Impact
+
+EcoLoop AI encourages environmentally responsible electronic waste management by promoting:
+
+- Reuse of functional electronic devices.
+- Repair of damaged but recoverable electronics.
+- Recycling of devices unsuitable for reuse.
+- Recovery of valuable electronic materials.
+- Awareness of estimated CO₂e emissions avoided.
+
+The platform aims to make sustainable electronic waste recovery more accessible and understandable.
+
+---
 
 ## 🚀 Future Scope
 
 Potential future enhancements include:
 
-- AI-powered resale price prediction.
-- Location-based e-waste collection services.
-- Doorstep e-waste pickup requests.
+- AI-powered resale value prediction.
+- Doorstep e-waste collection requests.
 - Integration with authorized recycling partners.
 - Advanced device health diagnostics.
-- E-waste generation and recovery analytics.
-- Admin dashboard for managing users and recovery providers.
-- More advanced environmental impact estimation.
-
-## 👨‍💻 Project Information
-
-**Project Name:** EcoLoop AI
-
-**Domain:** Artificial Intelligence, Machine Learning, Sustainability and E-Waste Management
-
-**Objective:** Building an intelligent platform for electronic waste identification, condition assessment, and sustainable recovery recommendations.
-
-## 🤝 Contributions
-
-Contributions, suggestions, and improvements are welcome.
-
-Feel free to fork this repository, create a feature branch, and submit a pull request.
-
-## 📄 License
-
-Choose and add an appropriate open-source license before distributing this project.
-
----
-
-**EcoLoop AI – Making Every Device Count. ♻️**
+- Improved battery and component damage recognition.
+- Personalized sustainability analytics.
+- Admin dashboard for managing users and recovery centres.
+- Advanced environmental impact forecasting.
+- Persistent user notification and profile
