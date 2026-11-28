@@ -26,15 +26,18 @@ function Upload() {
   const [saving, setSaving] = useState(false); 
 
   const [formData, setFormData] = useState({
-    deviceName: "",
-    category: "",
-    brand: "",
-    model: "",
-    purchaseYear: "",
-    condition: "",
-    workingStatus: "",
-    description: ""
-  });
+  deviceName: "",
+  category: "",
+  brand: "",
+  model: "",
+  purchaseYear: "",
+  condition: "",
+  workingStatus: "",
+  performance: "",
+  batteryHealth: "",
+  physicalDamage: "",
+  description: ""
+});
 
   const handleChange = (e) => {
     setFormData({
@@ -102,6 +105,9 @@ const handleSubmit = async (e) => {
     data.append("purchase_year", formData.purchaseYear);
     data.append("condition", formData.condition);
     data.append("working_status", formData.workingStatus);
+    data.append("performance", formData.performance);
+    data.append("battery_health", formData.batteryHealth);
+    data.append("physical_damage", formData.physicalDamage);
     data.append("description", formData.description);
 
     const result = await analyzeDevice(data);
@@ -374,6 +380,55 @@ const handleSaveDevice = async () => {
                   </label>
                 </div>
               </div>
+              <div className="form-field">
+  <label>Device Performance *</label>
+
+  <select
+    name="performance"
+    value={formData.performance}
+    onChange={handleChange}
+    required
+  >
+    <option value="">Select performance</option>
+    <option value="Normal">Works normally</option>
+    <option value="Slow">Runs slowly</option>
+    <option value="Frequently hangs">Frequently hangs or freezes</option>
+    <option value="Not tested">Not tested</option>
+  </select>
+</div>
+<div className="form-field">
+  <label>Battery Health</label>
+
+  <select
+    name="batteryHealth"
+    value={formData.batteryHealth}
+    onChange={handleChange}
+  >
+    <option value="">Select battery health</option>
+    <option value="Good">Good</option>
+    <option value="Drains quickly">Drains quickly</option>
+    <option value="Not working">Not working</option>
+    <option value="Not applicable">Not applicable</option>
+    <option value="Not tested">Not tested</option>
+  </select>
+</div>
+<div className="form-field">
+  <label>Physical Damage *</label>
+
+  <select
+    name="physicalDamage"
+    value={formData.physicalDamage}
+    onChange={handleChange}
+    required
+  >
+    <option value="">Select damage level</option>
+    <option value="None">No visible damage</option>
+    <option value="Minor">Minor scratches or dents</option>
+    <option value="Moderate">Cracks or noticeable damage</option>
+    <option value="Severe">Severe physical damage</option>
+    <option value="Not sure">Not sure</option>
+  </select>
+</div>
 
               <div className="form-field full-width">
                 <label>Additional Description</label>
@@ -385,6 +440,7 @@ const handleSaveDevice = async () => {
                   rows={4}
                 />
               </div>
+              
 
             </div>
 
@@ -419,6 +475,139 @@ const handleSaveDevice = async () => {
         {(analysis.confidence * 100).toFixed(2)}%
       </p>
     </div>
+    
+{/* Gemini Description Analysis */}
+<div className="gemini-analysis-card">
+  <div className="gemini-analysis-heading">
+    <h3>Gemini AI Description Analysis</h3>
+    <span>AI Powered</span>
+  </div>
+
+  <p className="gemini-summary">
+    {analysis.description_analysis?.summary ||
+      "No additional description analysis available."}
+  </p>
+
+  <h4>Extracted Device Issues</h4>
+
+  {analysis.description_analysis?.issues?.length > 0 ? (
+    <ul className="gemini-issues-list">
+      {analysis.description_analysis.issues.map((issue, index) => (
+        <li key={index}>{issue}</li>
+      ))}
+    </ul>
+  ) : (
+    <p>No additional issues detected from the description.</p>
+  )}
+
+  <div className="gemini-issue-flags">
+    <span>
+      Performance: {analysis.description_analysis?.performance_issue ? "Detected" : "Not detected"}
+    </span>
+    <span>
+      Battery: {analysis.description_analysis?.battery_issue ? "Detected" : "Not detected"}
+    </span>
+    <span>
+      Functional: {analysis.description_analysis?.functional_issue ? "Detected" : "Not detected"}
+    </span>
+    <span>
+      Physical Damage: {analysis.description_analysis?.physical_damage_issue ? "Detected" : "Not detected"}
+    </span>
+  </div>
+</div>
+
+    
+
+<div className="condition-assessment-card">
+
+  <div className="condition-assessment-heading">
+    <div>
+      <span className="ai-analysis-tag">
+        CONDITION ASSESSMENT
+      </span>
+      <h3>Device Health Score</h3>
+    </div>
+
+    <div className="condition-score">
+      <strong>{analysis.condition_score}/100</strong>
+      <span>{analysis.condition_category}</span>
+    </div>
+  </div>
+
+  <div className="condition-progress-track">
+    <div
+      className="condition-progress-fill"
+      style={{
+        width: `${analysis.condition_score}%`
+      }}
+    />
+  </div>
+
+  <div className="identified-issues">
+    <h4>Identified Issues</h4>
+
+    {analysis.identified_issues?.length > 0 ? (
+      <ul>
+        {analysis.identified_issues.map((issue, index) => (
+          <li key={index}>{issue}</li>
+        ))}
+      </ul>
+    ) : (
+      <p>No major issues reported.</p>
+    )}
+  </div>
+
+  <div className="recovery-recommendation">
+    <span>Recommended Recovery Pathway</span>
+    <h3>{analysis.recommended_pathway}</h3>
+    <p>{analysis.recommendation_reason}</p>
+  </div>
+
+{/* Environmental Impact Card */}
+<div className="environmental-impact-card">
+  <div className="environmental-impact-heading">
+    <h3>Environmental Impact</h3>
+    <span>Eco Impact</span>
+  </div>
+
+  {analysis.estimated_co2_kg !== null &&
+   analysis.estimated_co2_kg !== undefined ? (
+    <>
+      <div className="co2-impact-value">
+        <strong>{analysis.estimated_co2_kg}</strong>
+        <span>kg CO₂e</span>
+      </div>
+
+      <p>
+        Estimated potential emissions benefit through{" "}
+        {analysis.recommended_pathway.toLowerCase()}.
+      </p>
+
+      <div className="environmental-impact-details">
+        <span>
+          Device: <strong>{analysis.classification}</strong>
+        </span>
+        <span>
+          Recovery: <strong>{analysis.recommended_pathway}</strong>
+        </span>
+      </div>
+    </>
+  ) : (
+    <p>
+      Environmental impact estimate is currently unavailable
+      for this device or recovery pathway.
+    </p>
+  )}
+
+  <small>
+    Illustrative estimate based on EcoLoop AI project assumptions,
+    not a verified lifecycle assessment.
+  </small>
+</div>
+
+
+</div>
+
 
     <div className="ai-predictions">
       <h3>Top Predictions</h3>

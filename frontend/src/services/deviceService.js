@@ -81,6 +81,9 @@ export const saveDevice = async ({
 
       recommended_pathway: analysis.recommended_pathway,
       estimated_co2_kg: analysis.estimated_co2_kg,
+      performance: formData.performance,
+      battery_health: formData.batteryHealth,
+      physical_damage: formData.physicalDamage,
 
       image_url: filePath,
     })

@@ -7,9 +7,13 @@ from fastapi import (
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.services.prediction_service import DevicePredictionService
-from app.services.recovery_service import recommend_recovery_pathway
+from app.services.recovery_service import (
+    assess_device_condition,
+    recommend_recovery_pathway
+)
 from app.services.carbon_service import calculate_co2_savings
 from app.services.provider_service import search_recovery_centres
+from app.services.gemini_service import analyze_device_description
 
 
 # Load model once when the API starts
@@ -99,6 +103,9 @@ async def analyze_device(
     purchase_year: str = Form(""),
     condition: str = Form(...),
     working_status: str = Form(...),
+    performance: str = Form(...),
+    battery_health: str = Form(""),
+    physical_damage: str = Form(...),
     description: str = Form("")
 ):
 
@@ -130,21 +137,56 @@ async def analyze_device(
             detail="Uploaded image is empty."
         )
 
+    
     try:
-        # Run MobileNetV2 prediction
+        # 1. Run MobileNetV2 device classification
         prediction = app.state.prediction_service.predict(
             image_data
         )
+                # 2. Analyze user's description using Gemini
+        description_analysis = {
+            "summary": "",
+            "issues": [],
+            "performance_issue": False,
+            "battery_issue": False,
+            "functional_issue": False,
+            "physical_damage_issue": False
+        }
+
+        try:
+            if description.strip():
+                description_analysis = analyze_device_description(
+                    description
+                )
+
+        except Exception as e:
+            print("Gemini analysis error:", str(e))
+            print("Continuing without Gemini analysis...")
+        # 2. Assess device condition using user inputs
+        condition_assessment = assess_device_condition(
+            working_status=working_status,
+            condition=condition,
+            performance=performance,
+            battery_health=battery_health,
+            physical_damage=physical_damage,
+            purchase_year=purchase_year,
+            description=description,
+            description_analysis=description_analysis
+        )
+
+        # 3. Recommend recovery pathway using assessed condition
         recovery = recommend_recovery_pathway(
-        working_status,
-        condition
-    )
+            working_status=working_status,
+            condition=condition,
+            condition_score=condition_assessment["condition_score"],
+            physical_damage=physical_damage
+        )
+
+        # 4. Calculate estimated carbon savings
         estimated_co2 = calculate_co2_savings(
-    prediction["category"],
-    recovery["pathway"]
-)
-        
-    
+            prediction["category"],
+            recovery["pathway"]
+        )
 
     except Exception as e:
         print("Prediction error:", str(e))
@@ -153,6 +195,7 @@ async def analyze_device(
             status_code=500,
             detail="Unable to analyze the uploaded image."
         )
+
 
     return {
         "success": True,
@@ -166,18 +209,36 @@ async def analyze_device(
             "purchase_year": purchase_year,
             "condition": condition,
             "working_status": working_status,
+            "performance": performance,
+            "battery_health": battery_health,
+            "physical_damage": physical_damage,
             "description": description,
             "image_filename": image.filename
-        },
+},
 
+        
         "analysis": {
             "status": "completed",
+
+            # MobileNetV2 classification
             "classification": prediction["category"],
             "confidence": prediction["confidence"],
             "top_predictions": prediction["top_predictions"],
-            "estimated_value": None,
-            "estimated_co2_kg": estimated_co2,
+            # Gemini description analysis
+            "description_analysis": description_analysis,
+
+            # Hybrid condition assessment
+            "condition_score": condition_assessment["condition_score"],
+            "condition_category": condition_assessment["condition_category"],
+            "identified_issues": condition_assessment["identified_issues"],
+
+            # Recovery recommendation
             "recommended_pathway": recovery["pathway"],
-            "recommendation_reason": recovery["reason"]
+            "recommendation_reason": recovery["reason"],
+
+            # Environmental impact
+            "estimated_value": None,
+            "estimated_co2_kg": estimated_co2
         }
+
     }

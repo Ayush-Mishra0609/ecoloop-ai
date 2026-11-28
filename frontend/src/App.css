@@ -2116,3 +2116,546 @@
   background: #16a34a;
   color: white;
 }
+
+/* Hybrid Condition Assessment */
+
+.condition-assessment-card {
+  margin: 25px 0;
+  padding: 24px;
+  background: #f7fbf7;
+  border: 1px solid #dcebdc;
+  border-radius: 14px;
+}
+
+.condition-assessment-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 18px;
+}
+
+.condition-assessment-heading h3 {
+  margin-top: 8px;
+  color: #183b25;
+  font-size: 20px;
+}
+
+.condition-score {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.condition-score strong {
+  font-size: 25px;
+  color: #23834b;
+}
+
+.condition-score span {
+  font-size: 13px;
+  font-weight: 600;
+  color: #b7791f;
+}
+
+.condition-progress-track {
+  width: 100%;
+  height: 12px;
+  background: #e3ebe3;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.condition-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #e0a33b, #2e9d59);
+  border-radius: 20px;
+  transition: width 0.5s ease;
+}
+
+.identified-issues {
+  margin-top: 25px;
+}
+
+.identified-issues h4 {
+  color: #183b25;
+  font-size: 15px;
+  margin-bottom: 12px;
+}
+
+.identified-issues ul {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.identified-issues li {
+  color: #526357;
+  font-size: 14px;
+  margin-bottom: 9px;
+  line-height: 1.5;
+}
+
+.recovery-recommendation {
+  margin-top: 24px;
+  padding: 18px;
+  background: white;
+  border: 1px solid #dcebdc;
+  border-radius: 10px;
+}
+
+.recovery-recommendation span {
+  font-size: 12px;
+  color: #718174;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.recovery-recommendation h3 {
+  margin: 9px 0;
+  color: #23834b;
+  font-size: 23px;
+}
+
+.recovery-recommendation p {
+  color: #526357;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .condition-assessment-card {
+    padding: 17px;
+  }
+
+  .condition-assessment-heading h3 {
+    font-size: 17px;
+  }
+
+  .condition-score strong {
+    font-size: 21px;
+  }
+}
+
+/* Gemini Description Analysis */
+
+.gemini-analysis-card {
+  margin: 24px 0;
+  padding: 22px;
+  border: 1px solid #dce8df;
+  border-radius: 14px;
+  background: #f7faf7;
+}
+
+.gemini-analysis-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.gemini-analysis-heading h3 {
+  margin: 0;
+  color: #234d35;
+}
+
+.gemini-analysis-heading span {
+  background: #e0f2e6;
+  color: #237344;
+  padding: 6px 11px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.gemini-summary {
+  line-height: 1.7;
+  color: #45534a;
+}
+
+.gemini-analysis-card h4 {
+  margin: 18px 0 10px;
+}
+
+.gemini-issues-list {
+  padding-left: 22px;
+  line-height: 1.9;
+}
+
+.gemini-issue-flags {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.gemini-issue-flags span {
+  padding: 10px;
+  background: white;
+  border: 1px solid #e0e9e2;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+@media (max-width: 600px) {
+  .gemini-issue-flags {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Environmental Impact Card */
+
+.environmental-impact-card {
+  margin-top: 20px;
+  padding: 22px;
+  border: 1px solid #cfe8d5;
+  border-radius: 14px;
+  background: #f0f8f2;
+}
+
+.environmental-impact-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.environmental-impact-heading h3 {
+  margin: 0;
+  color: #245b38;
+}
+
+.environmental-impact-heading span {
+  padding: 6px 11px;
+  border-radius: 20px;
+  background: #dcefe1;
+  color: #247044;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.co2-impact-value {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  margin-top: 20px;
+  color: #16834b;
+}
+
+.co2-impact-value strong {
+  font-size: 36px;
+}
+
+.co2-impact-value span {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.environmental-impact-card > p {
+  color: #53645a;
+  line-height: 1.6;
+}
+
+.environmental-impact-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.environmental-impact-details span {
+  padding: 10px 13px;
+  background: white;
+  border: 1px solid #dce9df;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.environmental-impact-card small {
+  display: block;
+  margin-top: 15px;
+  color: #718078;
+  line-height: 1.5;
+}
+
+/* SETTINGS PAGE */
+
+.settings-main {
+  padding-bottom: 40px;
+}
+
+.settings-welcome {
+  margin: 25px 0;
+}
+
+.settings-welcome h1 {
+  font-size: 26px;
+  color: #10251b;
+  margin-bottom: 8px;
+}
+
+.settings-welcome p {
+  color: #718096;
+  font-size: 14px;
+}
+
+.settings-card {
+  background: #ffffff;
+  border: 1px solid #dce9df;
+  border-radius: 13px;
+  padding: 25px;
+  margin-bottom: 20px;
+}
+
+.settings-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.settings-heading-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 10px;
+  background: #edfaf1;
+  color: #159447;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-card-heading h3 {
+  font-size: 17px;
+  color: #10251b;
+  margin-bottom: 5px;
+}
+
+.settings-card-heading p {
+  color: #829087;
+  font-size: 13px;
+}
+
+.settings-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.settings-field {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.settings-field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #34483b;
+}
+
+.settings-field input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #dce5df;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+}
+
+.settings-field input:focus {
+  border-color: #16a34a;
+}
+
+.settings-save-btn {
+  margin-top: 22px;
+  background: #13843e;
+  color: white;
+  border: none;
+  padding: 11px 18px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.settings-save-btn:hover {
+  background: #106d33;
+}
+
+.settings-success {
+  color: #159447;
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+.settings-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  padding: 17px 0;
+  border-top: 1px solid #edf1ed;
+}
+
+.settings-option strong {
+  font-size: 14px;
+  color: #263c2e;
+}
+
+.settings-option p {
+  font-size: 12px;
+  color: #849087;
+  margin-top: 5px;
+}
+
+.settings-option input[type="checkbox"] {
+  width: 19px;
+  height: 19px;
+  accent-color: #16a34a;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.settings-footer {
+  text-align: center;
+  color: #8a998e;
+  font-size: 13px;
+  padding: 15px;
+}
+
+/* DARK MODE */
+.settings-dark {
+  background: #111c16;
+}
+
+.settings-dark .dashboard-main {
+  background: #111c16;
+}
+
+.settings-dark .settings-welcome h1,
+.settings-dark .settings-card-heading h3,
+.settings-dark .settings-option strong {
+  color: #e5f5e9;
+}
+
+.settings-dark .settings-card {
+  background: #1c2b22;
+  border-color: #344b3a;
+}
+
+.settings-dark .settings-field label {
+  color: #d1e4d6;
+}
+
+.settings-dark .settings-field input {
+  background: #26382c;
+  border-color: #405846;
+  color: white;
+}
+
+.settings-dark .settings-option {
+  border-color: #344b3a;
+}
+
+/* MOBILE RESPONSIVENESS */
+@media (max-width: 768px) {
+  .settings-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-card {
+    padding: 18px;
+  }
+
+  .settings-welcome h1 {
+    font-size: 22px;
+  }
+}
+
+/* GLOBAL DARK MODE */
+
+[data-theme="dark"] body {
+  background: #111c16;
+  color: #e5f5e9;
+}
+
+/* Main layouts */
+[data-theme="dark"] .dashboard-layout {
+  background: #111c16;
+}
+
+[data-theme="dark"] .dashboard-main {
+  background: #111c16;
+  color: #e5f5e9;
+}
+
+/* Sidebar */
+[data-theme="dark"] .dashboard-sidebar {
+  background: #18251d;
+  border-color: #344b3a;
+}
+
+[data-theme="dark"] .sidebar-nav a {
+  color: #c3d5c7;
+}
+
+[data-theme="dark"] .sidebar-nav a.active {
+  background: #23432e;
+  color: #4ade80;
+}
+
+/* Headers and cards */
+[data-theme="dark"] .dashboard-header h2,
+[data-theme="dark"] .dashboard-welcome h1,
+[data-theme="dark"] .panel-heading h3 {
+  color: #e5f5e9;
+}
+
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .dashboard-panel,
+[data-theme="dark"] .settings-card {
+  background: #1c2b22;
+  border-color: #344b3a;
+  color: #e5f5e9;
+}
+
+/* Secondary text */
+[data-theme="dark"] .dashboard-header p,
+[data-theme="dark"] .panel-heading p,
+[data-theme="dark"] .stat-card p,
+[data-theme="dark"] .settings-option p {
+  color: #a5b8aa;
+}
+
+/* Welcome section */
+[data-theme="dark"] .dashboard-welcome {
+  background: #193a27;
+  border-color: #28603b;
+}
+
+/* Tables */
+[data-theme="dark"] .activity-row {
+  border-color: #344b3a;
+  color: #e5f5e9;
+}
+
+/* Settings inputs */
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+  background: #26382c;
+  color: #ffffff;
+  border-color: #405846;
+}
+
+/* Footer */
+[data-theme="dark"] .impact-footer,
+[data-theme="dark"] .chart-note {
+  background: #193a27;
+  color: #a7f3bd;
+}

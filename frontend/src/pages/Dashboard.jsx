@@ -41,6 +41,67 @@ const totalCo2Saved = devices.reduce(
   },
   0
 );
+// Estimated base recovery values in INR (editable assumptions)
+const recoveryBaseValues = {
+  mobile: 8000,
+  laptop: 18000,
+  battery: 500,
+  cable: 100,
+  keyboard: 300,
+  mouse: 150,
+  pcb: 700,
+};
+
+const pathwayMultipliers = {
+  Reuse: 1.0,
+  Repair: 0.65,
+  Recycle: 0.12,
+};
+
+// Adjust estimated value according to device condition
+const getConditionMultiplier = (device) => {
+  const score = Number(device.condition_score);
+
+  if (!Number.isFinite(score)) return 1;
+
+  if (score >= 80) return 1;
+  if (score >= 60) return 0.8;
+  if (score >= 40) return 0.6;
+  return 0.4;
+};
+
+const calculateRecoveryValue = (device) => {
+  // Prefer an actual value already calculated by the backend
+  if (device.estimated_recovery_value_inr != null) {
+    return Number(device.estimated_recovery_value_inr) || 0;
+  }
+
+  const category = (
+    device.confirmed_category ||
+    device.ai_classification ||
+    ""
+  ).toLowerCase().replace(/[^a-z]/g, "");
+
+  const pathway = device.recommended_pathway;
+
+  const baseValue = recoveryBaseValues[category];
+  const pathwayMultiplier = pathwayMultipliers[pathway];
+
+  if (baseValue == null || pathwayMultiplier == null) {
+    return 0;
+  }
+
+  return (
+    baseValue *
+    pathwayMultiplier *
+    getConditionMultiplier(device)
+  );
+};
+
+const totalRecoveryValue = devices.reduce(
+  (total, device) => total + calculateRecoveryValue(device),
+  0
+);
 
 const recoveryCounts = {
   Reuse: devices.filter(
@@ -108,14 +169,20 @@ const stats = [
   },
   {
     title: "Recovery Value",
-    value: "Not calculated",
-    change: "Awaiting valuation model",
+    value: loading
+      ? "..."
+      : `₹${totalRecoveryValue.toLocaleString("en-IN", {
+          maximumFractionDigits: 0
+        })}`,
+    change: "Estimated total recovery value",
     icon: IndianRupee
   },
   {
     title: "CO₂ Saved",
-    value: "Not calculated",
-    change: "Awaiting impact model",
+    value: loading
+      ? "..."
+      : `${totalCo2Saved.toFixed(1)} kg`,
+    change: "Estimated CO₂e emissions avoided",
     icon: Leaf
   }
 ];
@@ -157,9 +224,9 @@ const stats = [
             <History size={19} /> History
           </Link>
 
-          <a href="#settings">
-            <Settings size={19} /> Settings
-          </a>
+          <Link to="/settings">
+  <Settings size={19} /> Settings
+</Link>
         </nav>
 
         <div className="sidebar-bottom">
